@@ -1,10 +1,13 @@
-FROM node:9
+FROM node:9-alpine
 
 RUN npm -g install browser-sync
-WORKDIR /source
 
-ADD entrypoint.sh /entrypoint.sh
 EXPOSE 3001 7777
 
-ENTRYPOINT ["/entrypoint.sh"]
+# from the command line mount the PWD into the container's
+# /source directory; set workdir as this directory so that
+# node can find package.json and the subsequent start script
+# defined in it: ... -v "$PWD":/source ...
+WORKDIR /source
+CMD ["npm", "start"]
 
